@@ -1,0 +1,3 @@
+
+public/uploads/justificatifs/*
+!public/uploads/justificatifs/.gitkeep
