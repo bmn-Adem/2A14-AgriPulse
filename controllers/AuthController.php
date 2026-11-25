@@ -180,6 +180,12 @@ class AuthController
             }
             if (!preg_match('/^\d{7}[\/\-]?[A-Z][\/\-]?[A-Z0-9]{0,4}[\/\-]?\d{0,3}$/', $matriculeFiscal)) {
                 $errors[] = 'Le matricule fiscal tunisien est invalide (ex: 1548920/A/M/000).';
+            } else {
+                $stmtMf = $this->pdo->prepare('SELECT id FROM users WHERE matricule_fiscal = :mf LIMIT 1');
+                $stmtMf->execute([':mf' => $matriculeFiscal]);
+                if ($stmtMf->fetch()) {
+                    $errors[] = 'Ce matricule fiscal est déjà enregistré pour une autre entreprise sur AgriPulse.';
+                }
             }
             if (mb_strlen($adresseExacte) < 5) {
                 $errors[] = 'L\'adresse exacte du siège est obligatoire pour un client B2B.';
