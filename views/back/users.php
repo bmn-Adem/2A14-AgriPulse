@@ -1,63 +1,62 @@
-<?php require _DIR_ . '/../layouts/back_header.php'; ?>
+<?php require __DIR__ . '/../layouts/back_header.php'; ?>
 
 <div class="card border-0 shadow-sm">
-    <div class="card-header bg-white py-3">
-        <h5 class="mb-0 fw-bold">Gestion des Utilisateurs (<?= count($users) ?>)</h5>
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-success"><i class="bi bi-people-fill me-2"></i>Liste des Utilisateurs</h5>
+        <span class="badge bg-success"><?= count($users) ?> inscrit(s)</span>
     </div>
-    <div class="card-body table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Rôle actuel</th>
-                    <th>Modifier Rôle</th>
-                    <th>Inscription</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $u): ?>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
                     <tr>
-                        <td>#<?= $u['id'] ?></td>
-                        <td class="fw-semibold"><?= htmlspecialchars($u['nom']) ?></td>
-                        <td><?= htmlspecialchars($u['email']) ?></td>
-                        <td>
-                            <span class="badge bg-<?= $u['role_nom'] === 'admin' ? 'danger' : ($u['role_nom'] === 'agriculteur' ? 'success' : 'secondary') ?>">
-                                <?= htmlspecialchars($u['role_nom']) ?>
-                            </span>
-                        </td>
-                        <td>
-                            <form method="POST" action="index.php?page=user-role" class="d-flex gap-2">
-                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                                <select name="role_id" class="form-select form-select-sm" style="width: 140px;">
-                                    <?php foreach ($roles as $r): ?>
-                                        <option value="<?= $r['id'] ?>" <?= $r['id'] == $u['role_id'] ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($r['nom']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <button type="submit" class="btn btn-outline-primary btn-sm">OK</button>
-                            </form>
-                        </td>
-                        <td class="small text-muted"><?= htmlspecialchars($u['date_inscription']) ?></td>
-                        <td>
-                            <?php if ($u['id'] != $_SESSION['user']['id']): ?>
-                                <a href="index.php?page=user-delete&id=<?= $u['id'] ?>"
-                                   class="btn btn-outline-danger btn-sm"
-                                   onclick="return confirm('Supprimer cet utilisateur ?');">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            <?php else: ?>
-                                <span class="text-muted small">Vous</span>
-                            <?php endif; ?>
-                        </td>
+                        <th>ID</th>
+                        <th>Nom complet</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Date d'inscription</th>
+                        <th class="text-end">Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $u): ?>
+                        <tr>
+                            <td>#<?= (int)$u['id'] ?></td>
+                            <td class="fw-semibold"><?= htmlspecialchars($u['nom']) ?></td>
+                            <td><?= htmlspecialchars($u['email']) ?></td>
+                            <td>
+                                <form method="POST" action="index.php?page=users_role" class="d-flex gap-2 align-items-center" style="max-width: 240px;">
+                                    <input type="hidden" name="user_id" value="<?= (int)$u['id'] ?>">
+                                    <select name="role_id" class="form-select form-select-sm" <?= ($u['id'] === $_SESSION['user']['id']) ? 'disabled' : '' ?>>
+                                        <?php foreach ($roles as $r): ?>
+                                            <option value="<?= (int)$r['id'] ?>" <?= ((int)$r['id'] === (int)$u['role_id']) ? 'selected' : '' ?>>
+                                                <?= ucfirst(htmlspecialchars($r['nom'])) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <?php if ($u['id'] !== $_SESSION['user']['id']): ?>
+                                        <button type="submit" class="btn btn-sm btn-outline-success">OK</button>
+                                    <?php endif; ?>
+                                </form>
+                            </td>
+                            <td class="small text-muted"><?= htmlspecialchars($u['date_inscription']) ?></td>
+                            <td class="text-end">
+                                <?php if ($u['id'] !== $_SESSION['user']['id']): ?>
+                                    <a href="index.php?page=users_delete&id=<?= (int)$u['id'] ?>"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Supprimer définitivement cet utilisateur ?');">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-muted small">Vous</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<?php require _DIR_ . '/../layouts/back_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/back_footer.php'; ?>
