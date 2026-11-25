@@ -33,6 +33,14 @@ class AuthController
      */
     public function verifyCsrfToken(?string $token): bool
     {
+        return self::verifyCsrf($token);
+    }
+
+    /**
+     * Méthode statique de vérification CSRF (utilisée notamment par UserController).
+     */
+    public static function verifyCsrf(?string $token): bool
+    {
         if (empty($_SESSION['csrf_token']) || empty($token)) {
             return false;
         }
