@@ -104,13 +104,13 @@ $gouvernorats = [
                         </div>
                     </div>
 
-                    <!-- Section Dynamique : Client B2C -->
+                    <!-- Section Dynamique : Client B2C (Adresse optionnelle) -->
                     <div id="section-client_b2c" class="p-3 rounded-3 bg-primary bg-opacity-10 border border-primary-subtle mb-4">
                         <h6 class="fw-bold text-primary mb-2"><i class="bi bi-geo-alt me-1"></i>Livraison Particulier (B2C)</h6>
                         <div class="form-group">
-                            <label class="form-label fw-semibold">Adresse exacte de livraison <span class="text-danger">*</span></label>
-                            <input type="text" name="adresse_exacte" class="form-control" data-required-for="client_b2c"
-                                   placeholder="Rue, numéro, résidence, code postal..."
+                            <label class="form-label fw-semibold">Adresse exacte de livraison <span class="text-muted fw-normal">(optionnel)</span></label>
+                            <input type="text" name="adresse_exacte" class="form-control"
+                                   placeholder="Rue, numéro, résidence, code postal (facultatif)..."
                                    value="<?= htmlspecialchars($_POST['adresse_exacte'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         </div>
                     </div>
